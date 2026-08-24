@@ -67,7 +67,61 @@ const productVarieties = {
         "Cream Bear",
         "Pink Bear",
         "Custom Bear"
+    ],
+    "Tiny Bunny Plush": [
+        "Cream Bunny",
+        "Blush Bunny",
+        "Oat Bunny",
+        "Custom Bunny"
     ]
+};
+
+const productCategories = [
+    {
+        id: "keychains",
+        label: "Keychains",
+        products: [
+            "Little Bear Charm"
+        ]
+    },
+    {
+        id: "plushies",
+        label: "Plushies",
+        products: [
+            "Tiny Bunny Plush"
+        ]
+    },
+    {
+        id: "bags",
+        label: "Bags",
+        products: [
+            "Cloud Tote",
+            "Mini Flower Bag"
+        ]
+    },
+    {
+        id: "pouches",
+        label: "Pouches",
+        products: [
+            "Daisy Pouch"
+        ]
+    },
+    {
+        id: "headwears",
+        label: "Headwears",
+        products: [
+            "Cozy Beanie",
+            "Soft Scrunchie Set"
+        ]
+    }
+];
+
+const placeholderProducts = {
+    "Tiny Bunny Plush": {
+        price: "699",
+        meta: "Soft crochet • Placeholder",
+        badge: "Placeholder"
+    }
 };
 
 let activeProduct = null;
@@ -99,6 +153,11 @@ window.addEventListener("scroll", () => {
 /* =========================
    PRODUCT SCROLL ANIMATION
 ========================= */
+
+setupProductSections();
+
+setupCategoryFilters();
+
 
 const observer =
     new IntersectionObserver(
@@ -140,6 +199,169 @@ revealElements.forEach((element) => {
 
 
 setupProductCardCarousels();
+
+
+function setupProductSections() {
+
+    const shop =
+        document.getElementById("shop");
+
+    const originalGrid =
+        shop.querySelector(".products");
+
+    if (!originalGrid || originalGrid.classList.contains("sectioned")) {
+
+        return;
+
+    }
+
+    const existingProducts =
+        [...originalGrid.querySelectorAll(".product")];
+
+    const productByName =
+        new Map();
+
+    existingProducts.forEach((product) => {
+
+        productByName.set(product.dataset.name, product);
+
+    });
+
+    const filteredGrid =
+        document.createElement("div");
+
+    const categoryTitle =
+        document.createElement("div");
+
+    categoryTitle.className =
+        "category-head";
+
+    categoryTitle.innerHTML =
+        `
+            <span>Showing</span>
+            <h3>All</h3>
+        `;
+
+    filteredGrid.className =
+        "products sectioned";
+
+    productCategories.forEach((category) => {
+
+        category.products.forEach((productName) => {
+
+            const product =
+                productByName.get(productName) ||
+                createPlaceholderProduct(productName);
+
+            product.dataset.category =
+                category.id;
+
+            filteredGrid.appendChild(product);
+
+        });
+
+    });
+
+    originalGrid.replaceWith(categoryTitle, filteredGrid);
+
+}
+
+
+function createPlaceholderProduct(name) {
+
+    const details =
+        placeholderProducts[name];
+
+    const product =
+        document.createElement("article");
+
+    product.className =
+        "product reveal";
+
+    product.dataset.name =
+        name;
+
+    product.dataset.price =
+        details.price;
+
+    product.innerHTML =
+        `
+            <div
+                class="product-image"
+                onclick="openProduct(this)"
+            >
+                <span class="product-badge">${details.badge}</span>
+            </div>
+
+            <div class="product-info">
+                <div>
+                    <div class="product-name">${name}</div>
+                    <div class="product-meta">${details.meta}</div>
+                </div>
+                <div class="price">₱${details.price}</div>
+            </div>
+        `;
+
+    return product;
+
+}
+
+
+function setupCategoryFilters() {
+
+    const buttons =
+        document.querySelectorAll(".category-nav button");
+
+    const products =
+        document.querySelectorAll(".products.sectioned .product");
+
+    const categoryTitle =
+        document.querySelector(".category-head h3");
+
+    buttons.forEach((button) => {
+
+        button.addEventListener("click", () => {
+
+            const selectedCategory =
+                button.dataset.category;
+
+            const selectedLabel =
+                button.textContent.trim();
+
+            buttons.forEach((item) => {
+
+                item.classList.toggle(
+                    "active",
+                    item === button
+                );
+
+            });
+
+            products.forEach((product) => {
+
+                const shouldShow =
+                    selectedCategory === "all" ||
+                    product.dataset.category === selectedCategory;
+
+                product.classList.toggle(
+                    "hidden",
+                    !shouldShow
+                );
+
+            });
+
+            if (categoryTitle) {
+
+                categoryTitle.textContent =
+                    selectedLabel;
+
+            }
+
+        });
+
+    });
+
+}
 
 
 function setupProductCardCarousels() {

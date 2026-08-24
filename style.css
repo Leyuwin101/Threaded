@@ -635,6 +635,121 @@ h2 {
    PRODUCTS
 ========================= */
 
+.category-nav {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin: 24px auto 42px;
+
+    padding-bottom: 6px;
+
+    max-width: 760px;
+
+}
+
+
+.category-nav button {
+
+    border: 1px solid var(--line);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.42);
+
+    color: var(--accent-dark);
+
+    padding: 10px 14px;
+
+    cursor: pointer;
+
+    font-size: 0.82rem;
+
+    font-weight: 700;
+
+    transform: translateY(0);
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.category-nav button:hover {
+
+    background: var(--white);
+
+    color: var(--ink);
+
+    transform: translateY(-1px);
+
+}
+
+
+.category-nav button.active {
+
+    background: var(--ink);
+
+    border-color: var(--ink);
+
+    color: var(--white);
+
+}
+
+
+.category-head {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid var(--line);
+
+}
+
+
+.category-head span {
+
+    color: var(--accent-dark);
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+}
+
+
+.category-head h3 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(1.7rem, 3vw, 2.45rem);
+
+    line-height: 1;
+
+    letter-spacing: -0.04em;
+
+}
+
+
 .products {
 
     display: grid;
@@ -644,6 +759,13 @@ h2 {
     gap: 20px;
 
     min-width: 0;
+
+}
+
+
+.product.hidden {
+
+    display: none;
 
 }
 
@@ -1769,6 +1891,31 @@ footer {
         grid-template-columns: repeat(2, minmax(0, 1fr));
 
         gap: 10px;
+
+    }
+
+
+    .category-nav {
+
+        gap: 8px;
+
+        margin: 18px auto 30px;
+
+    }
+
+
+    .category-nav button {
+
+        padding: 8px 10px;
+
+        font-size: 0.72rem;
+
+    }
+
+
+    .category-head {
+
+        margin-bottom: 14px;
 
     }
 
